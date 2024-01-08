@@ -23,10 +23,12 @@ class App {
   }
 
   allowDev() {
-    this.server.use(cors({
-      origin: true,
-      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    }));
+    this.server.use(
+      cors({
+        origin: 'https://mygallery-m4nd.onrender.com',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      }),
+    );
   }
 
   routes() {
