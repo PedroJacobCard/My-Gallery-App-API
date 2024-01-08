@@ -3,6 +3,8 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 
+import allowsOrigin from './config/allowsOrigin';
+
 //import authMiddleware from './app/middlewares/auth';
 
 import routes from './routes';
@@ -25,7 +27,15 @@ class App {
   allowDev() {
     this.server.use(
       cors({
-        origin: 'https://mygallery-m4nd.onrender.com',
+        origin: (origin, callback) => {
+          if (allowsOrigin.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+          } else {
+            callback(new Error('Not allowed by CORS'));
+          }
+        },
+        credentials: true,
+        optionsSuccessStatus: 200,
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       }),
     );
