@@ -15,7 +15,7 @@ class App {
   constructor() {
     this.server = express();
     this.middlewares();
-    this.allowDev();
+    this.allowCORS();
     this.routes();
   }
 
@@ -24,7 +24,7 @@ class App {
     //this.server.use(authMiddleware);
   }
 
-  allowDev() {
+  allowCORS() {
     this.server.use(
       cors({
         origin: (origin, callback) => {
@@ -39,6 +39,19 @@ class App {
         methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
       }),
     );
+
+    this.server.use((req, res, next) => {
+      res.setHeader(
+        'Access-Control-Allow-Origin',
+        'https://mygallery-m4nd.onrender.com',
+      );
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+      res.setHeader(
+        'Access-Control-Allow-Headers',
+        'Content-Type, Authorization',
+      );
+      next();
+    });
   }
 
   routes() {
